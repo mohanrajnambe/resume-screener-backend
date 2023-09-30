@@ -1,0 +1,38 @@
+service: resume-screener
+ 
+plugins:
+  - serverless-python-requirements
+  - serverless-wsgi
+  - serverless-offline
+  - serverless-dynamodb-local
+custom:
+  wsgi:
+    app: app.app
+    packRequirements: false
+  pythonRequirements:
+    dockerizePip: non-linux
+ 
+provider:
+  name: aws
+  runtime: python3.9
+  stage: dev
+  region: us-east-1
+  environment:
+    MYSQL_HOST: ${self:custom.MYSQL.HOST}
+    MYSQL_PORT: ${self:custom.MYSQL.PORT}
+    MYSQL_DB_NAME: ${self:custom.MYSQL_DB_NAME}
+    MYSQL_USERNAME: ${self:custom.MYSQL_USERNAME}
+    MYSQL_PASSWORD: ${self:custom.MYSQL_PASSWORD}
+ 
+functions:
+  app:
+    handler: app.main
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
+  apiTest:
+    handler: app.test
+    events:
+      - http:
+          path: /test
+          method: GET
