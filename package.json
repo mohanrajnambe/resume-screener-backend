@@ -10,11 +10,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "serverless-dynamodb-local": "^0.2.40",
     "serverless-offline": "^13.1.1",
     "serverless-python-requirements": "^6.0.0",
     "serverless-wsgi": "^3.0.2"
-  },
-  "dependencies": {
-    "serverless-dynamodb-local": "^0.2.40"
   }
 }
