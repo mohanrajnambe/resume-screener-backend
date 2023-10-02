@@ -1,4 +1,4 @@
-service: resume-screener
+service: resume-processor
  
 plugins:
   - serverless-python-requirements
@@ -17,30 +17,8 @@ provider:
   runtime: python3.9
   stage: dev
   region: us-east-1
-  # environment:
-  #   MYSQL_HOST: ${self:custom.MYSQL.HOST}
-  #   MYSQL_PORT: ${self:custom.MYSQL.PORT}
-  #   MYSQL_DB_NAME: ${self:custom.MYSQL_DB_NAME}
-  #   MYSQL_USERNAME: ${self:custom.MYSQL_USERNAME}
-  #   MYSQL_PASSWORD: ${self:custom.MYSQL_PASSWORD}
  
 functions:
-  app:
-    handler: wsgi_handler.handler
-    events:
-      - http: ANY /
-      - http: 'ANY {proxy+}'
-  # app:
-  #   handler: app.main
-  #   events:
-  #     - http: ANY /
-  #     # - http: 'ANY {proxy+}'
-  apiTest:
-    handler: app.test
-    events:
-      - http:
-          path: /test
-          method: GET
   processResume:
     handler: app.processResume
     events:

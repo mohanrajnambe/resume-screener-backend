@@ -45,10 +45,11 @@ def getJobResults(jobId):
 
 def exteractTextFromDocument(documentName):
     jobId = invokeTextDetectJob(documentName)
+    extractedText = ''
     if (checkJobComplete(jobId)):
         result = getJobResults(jobId)
-        extractedText = ''
         for resultPage in result:
             for item in resultPage["Blocks"]:
                 if item["BlockType"] == "LINE":
-                    extractedText += '\033[94m' + item["Text"] + '\033[0m'
+                    extractedText += item["Text"] + ' '
+    return extractedText

@@ -1,6 +1,8 @@
 from flask import Flask, request
 import json
 import cron.process_resume as pr
+import cron.process_context as pc
+import asyncio
 
 app = Flask(__name__)
 
@@ -19,3 +21,8 @@ def test():
 def processResume():
     pr.run()
     return "Resume Processed"
+
+@app.route("/process-context", methods=['POST'])
+def processContext():
+    pc.run()
+    return "Context Processed"
