@@ -65,6 +65,7 @@ def getCandidateList(event, context):
 @app.route('/job-opening-list')
 def getJobOpeningList(event, context):
     try:
+        print(event)
         applicationcount = 'false'
         logging.info("Received Lambda event: %s", json.dumps(event))
         if event.get("queryStringParameters"):
@@ -88,10 +89,14 @@ def getJobOpeningList(event, context):
             for job in jobs:
                 job_dict = job_to_dict(job)
                 job_list.append(job_dict)
-        return {
+        response = {
             'statusCode': 200,
             'body': json.dumps(job_list)
         }
+        response.headers.add('Access-Control-Allow-Origin', '*')  # Replace with your frontend domain or '*' for any domain
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+        response.headers.add('Access-Control-Allow-Methods', 'GET')
+        return response
     except Exception as e:
         print(e)
         return {
@@ -102,6 +107,7 @@ def getJobOpeningList(event, context):
 @app.route('/post-job', methods=['POST'])
 def postJob(event, context):
     try:
+        print(event)
         logging.info("Received Lambda event: %s", json.dumps(event))
         event_body = json.loads(event['body'])
         data = event_body
@@ -110,7 +116,6 @@ def postJob(event, context):
             description=data['description'],
             openingCount=data['openingCount']
         )
-
         db.session.add(new_job)
         db.session.commit()
 
@@ -152,10 +157,14 @@ def getAppliedJobs(event, context):
             }
             job_list.append(job_dict)
 
-        return {
+        response =  {
             'statusCode': 201,
             'body': json.dumps(job_list)
         }
+        response.headers.add('Access-Control-Allow-Origin', '*')  # Replace with your frontend domain or '*' for any domain
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+        response.headers.add('Access-Control-Allow-Methods', 'GET')
+        return response
     except Exception as e:
         print(e)
         return {
@@ -243,6 +252,7 @@ def applyJob(event, context):
 
 @app.route('/application-no-relevancy', methods=['GET'])
 def getApplicationsWithNoRelevancy(event, context):
+    print(event)
     try:
         applications = Application.query.filter_by(relevancyScore=-1).all()
 

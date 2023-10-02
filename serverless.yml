@@ -1,4 +1,4 @@
-service: resume-screener
+service: resume-screener-v1
  
 plugins:
   - serverless-python-requirements
@@ -14,7 +14,7 @@ custom:
  
 provider:
   name: aws
-  runtime: python3.9
+  runtime: python3.10
   stage: dev
   region: us-east-1
 
