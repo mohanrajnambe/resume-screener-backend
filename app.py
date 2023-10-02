@@ -65,16 +65,14 @@ def getCandidateList(event, context):
 @app.route('/job-opening-list')
 def getJobOpeningList(event, context):
     try:
+        # print(f'args: {request.args}')
         print(f'event: {event}')
         applicationcount = 'false'
         # print("Received Lambda event: %s", json.dumps(event))
-        applicationcount = request.args.get('applicationcount')
-        # if event.get("queryStringParameters"):
-        #     if event["queryStringParameters"].get("applicationcount"):
-        #         applicationcount = event["queryStringParameters"]['applicationcount']
-
-        print(f'args: {applicationcount}')
-
+        # applicationcount = request.args.get('applicationcount')
+        if event.get("queryStringParameters"):
+            if event["queryStringParameters"].get("applicationcount"):
+                applicationcount = event["queryStringParameters"]['applicationcount']
         applicationCount = applicationcount.lower() == 'true'
         job_list = []
 
