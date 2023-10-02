@@ -25,6 +25,11 @@ functions:
       - http:
           path: /test
           method: GET
+          cors:
+            origin: '*'  # Replace with your frontend domain or '*' for any domain
+            headers:
+              - Content-Type
+            allowCredentials: false
   apiTestdb:
     handler: app.getCandidateList
     timeout: 30
@@ -32,6 +37,11 @@ functions:
       - http:
           path: /candidate-list
           method: GET
+          cors:
+            origin: '*'  # Replace with your frontend domain or '*' for any domain
+            headers:
+              - Content-Type
+            allowCredentials: false
   apiJobOpening:
     handler: app.getJobOpeningList
     timeout: 30
@@ -39,6 +49,11 @@ functions:
       - http:
           path: /job-opening-list
           method: GET
+          cors:
+            origin: '*'  # Replace with your frontend domain or '*' for any domain
+            headers:
+              - Content-Type
+            allowCredentials: false
   apiPostJob:
     handler: app.postJob
     timeout: 90
@@ -46,6 +61,11 @@ functions:
       - http:
           path: /post-job
           method: POST
+          cors:
+            origin: '*'  # Replace with your frontend domain or '*' for any domain
+            headers:
+              - Content-Type
+            allowCredentials: false
   apiAppliedJob:
     handler: app.getAppliedJobs
     timeout: 30
@@ -53,6 +73,11 @@ functions:
       - http:
           path: /applied-jobs
           method: GET
+          cors:
+            origin: '*'  # Replace with your frontend domain or '*' for any domain
+            headers:
+              - Content-Type
+            allowCredentials: false
   apiNonAppliedJob:
     handler: app.getNonAppliedJobs
     timeout: 30
@@ -60,6 +85,11 @@ functions:
       - http:
           path: /non-applied-jobs
           method: GET
+          cors:
+            origin: '*'  # Replace with your frontend domain or '*' for any domain
+            headers:
+              - Content-Type
+            allowCredentials: false
   apiApplyJob:
     handler: app.applyJob
     timeout: 90
@@ -67,6 +97,11 @@ functions:
       - http:
           path: /apply-job
           method: POST
+          cors:
+            origin: '*'  # Replace with your frontend domain or '*' for any domain
+            headers:
+              - Content-Type
+            allowCredentials: false
   apiApplicationsWithNoRelevancy:
     handler: app.getApplicationsWithNoRelevancy
     timeout: 90
@@ -74,6 +109,11 @@ functions:
       - http:
           path: /application-no-relevancy
           method: GET
+          cors:
+            origin: '*'  # Replace with your frontend domain or '*' for any domain
+            headers:
+              - Content-Type
+            allowCredentials: false
   apiPostAverageRelevancy:
     handler: app.postAverageRelevancy
     timeout: 90
@@ -81,6 +121,11 @@ functions:
       - http:
           path: /post-average-relevancy
           method: POST
+          cors:
+            origin: '*'  # Replace with your frontend domain or '*' for any domain
+            headers:
+              - Content-Type
+            allowCredentials: false
   apiGetJobById:
     handler: app.getJobById
     timeout: 90
@@ -88,4 +133,13 @@ functions:
       - http:
           path: /get-job-id
           method: GET
+          cors:
+            origin: '*'  # Replace with your frontend domain or '*' for any domain
+            headers:
+              - Content-Type
+            allowCredentials: false
 
+package:
+  patterns:
+    - '!node_modules/**'
+    - '!venv/**'

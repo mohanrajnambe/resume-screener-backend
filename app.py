@@ -8,15 +8,18 @@ from flask_cors import CORS
 from models import Application, Job, Candidate, db
 import os
 import re
+import boto3
+
 app = Flask(__name__)
 CORS(app)
 app.app_context().push()
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DB_URI']
+dynamodb = boto3.client('dynamodb', region_name='us-east-1')
 
 db.init_app(app)
 migrate = Migrate(app, db)
-
+table_name = 'resume_summary'
 @app.route("/")
 def main(event, context):
     return "Home is under construction!"
@@ -283,7 +286,7 @@ def postAverageRelevancy(event, context):
                 application.relevancyScore = average
                 db.session.commit()
                 return {
-                    'statusCode': 400,
+                    'statusCode': 200,
                     'body': json.dumps({'message': 'Relevancy score updated successfully'})
                 }
             else:
@@ -336,6 +339,34 @@ def getJobById(event, context):
                     'relevancy_score': application.relevancyScore
                 }
                 applications_list.append(application_dict)
+                print(candidate.id)
+                try:
+                    # Use the get_item method to retrieve an item based on the candidate_id
+                    response = dynamodb.get_item(
+                        TableName='resume_summary',
+                        Key={
+                            'candidateId': {'S': str(candidate.id)},
+                            'jobId': {'S': str(job_id)}
+                        }
+                    )
+
+                    # Check if the item was found
+                    print("Received Lambda event: %s", json.dumps(response))
+                    if 'Item' in response:
+                        item = response['Item']
+                        # application_dict['summary'] = json.loads(item['summary']['S'])
+                        summary = json.loads(item['summary']['S'])
+                        # print(f"summary retrieved: {json.loads(item['summary']['S']['JSON'])}")
+
+                        json_string = summary.replace('\n', '').replace('    ', '')
+                        data = json.loads(json_string)
+                        print
+                        application_dict['summary'] = data
+
+                    else:
+                        print(f"No item found for candidate_id: {candidate.id} {job_id}")
+                except Exception as e:
+                    print(e)
 
         job_data = {
             'job_id': job.id,
