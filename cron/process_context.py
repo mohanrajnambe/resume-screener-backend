@@ -37,5 +37,5 @@ def run():
                         'https://qvizwfql6f.execute-api.us-east-1.amazonaws.com/dev/post-average-relevancy',
                         data=json.dumps(requestBody)
                     )
-    print('Context Processed')
+        print('Context Processed')
     return None

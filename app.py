@@ -7,9 +7,16 @@ app = Flask(__name__)
 @app.route("/process-resume", methods=['POST'])
 def processResume(event, lambda_context):
     pr.run()
-    return "Resume Processed"
+    return {
+        'status': 200,
+        'response': "Resume Processed"
+    }
 
 @app.route("/process-context", methods=['POST'])
 def processContext(event, lambda_context):
     pc.run()
-    return "Context Processed"
+    
+    return {
+        'status': 200,
+        'response': "Context Processed"
+    }
