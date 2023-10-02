@@ -17,7 +17,7 @@ def getOpenApiResponse(resumeContext, jobTitle):
     return response.decode()
     
 def run():
-    candiatesList = (getNoRelevencyScoreData()).json()
+    candiatesList = ast.literal_eval((getNoRelevencyScoreData()).json()['body'])
     for candidate in candiatesList:
         context = dynamoDbUtils.getResumeContext(candidate['candidate_id'])
         if (context):
