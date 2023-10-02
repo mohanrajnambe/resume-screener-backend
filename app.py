@@ -130,8 +130,8 @@ def postJob(event, context):
 def getAppliedJobs(event, context):
     try:
         candidate_id = 0
-        if event.get("queryStringParameters") and event["queryStringParameters"].get("candidateid"):
-                candidate_id = event["queryStringParameters"]['candidateid']
+        if event["candidateid"]:
+                candidate_id = event['candidateid']
         candidate = Candidate.query.get(candidate_id)
 
         if not candidate:
@@ -170,8 +170,8 @@ def getAppliedJobs(event, context):
 def getNonAppliedJobs(event, context):
     try:
         candidate_id = 0
-        if event.get("queryStringParameters") and event["queryStringParameters"].get("candidateid"):
-                candidate_id = event["queryStringParameters"]['candidateid']
+        if event["candidateid"]:
+                candidate_id = event['candidateid']
         candidate = Candidate.query.get(candidate_id)
 
 
@@ -316,8 +316,8 @@ def getJobById(event, context):
         print(event)
         # Retrieve the job by its ID
         job_id = 0
-        if event.get("queryStringParameters") and event["queryStringParameters"].get("jobid"):
-                job_id = event["queryStringParameters"]['jobid']
+        if event.get["jobid"]:
+                job_id = event['jobid']
         job = Job.query.get(job_id)
 
         if not job:
