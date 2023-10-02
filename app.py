@@ -70,10 +70,10 @@ def getJobOpeningList(event, context):
         applicationcount = 'false'
         # print("Received Lambda event: %s", json.dumps(event))
         # applicationcount = request.args.get('applicationcount')
-        if event.get("queryStringParameters"):
-            if event["queryStringParameters"].get("applicationcount"):
-                applicationcount = event["queryStringParameters"]['applicationcount']
+        if event['applicationcount']:
+            applicationcount =event['applicationcount']
         applicationCount = applicationcount.lower() == 'true'
+        print(f'applicationCount: {applicationCount}')
         job_list = []
 
         if applicationCount:
