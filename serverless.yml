@@ -138,6 +138,18 @@ functions:
             headers:
               - Content-Type
             allowCredentials: false
+  getUploadResumePresignedUrl:
+    handler: app.getUploadResumePresignedUrl
+    timeout: 30
+    events:
+      - http:
+          path: /get-upload-resume-singed-url
+          method: GET
+          cors:
+            origin: '*'  # Replace with your frontend domain or '*' for any domain
+            headers:
+              - Content-Type
+            allowCredentials: false
 
 package:
   patterns:

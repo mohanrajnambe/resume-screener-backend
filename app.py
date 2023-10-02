@@ -2,7 +2,7 @@ import json
 import logging
 from nis import cat
 from re import L
-from flask import Flask
+from flask import Flask, request
 from flask_migrate import Migrate
 from flask_cors import CORS
 from models import Application, Job, Candidate, db
@@ -63,15 +63,16 @@ def getCandidateList(event, context):
         }
 
 @app.route('/job-opening-list')
-def getJobOpeningList(event, context):
+def getJobOpeningList():
     try:
-        print(event)
         applicationcount = 'false'
-        logging.info("Received Lambda event: %s", json.dumps(event))
-        if event.get("queryStringParameters"):
-            if event["queryStringParameters"].get("applicationcount"):
-                applicationcount = event["queryStringParameters"]['applicationcount']
+        # print("Received Lambda event: %s", json.dumps(event))
+        applicationcount = request.args.get('applicationcount')
+        # if event.get("queryStringParameters"):
+        #     if event["queryStringParameters"].get("applicationcount"):
+        #         applicationcount = event["queryStringParameters"]['applicationcount']
 
+        print(applicationcount)
 
         applicationCount = applicationcount.lower() == 'true'
         job_list = []
@@ -93,9 +94,6 @@ def getJobOpeningList(event, context):
             'statusCode': 200,
             'body': json.dumps(job_list)
         }
-        response.headers.add('Access-Control-Allow-Origin', '*')  # Replace with your frontend domain or '*' for any domain
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-        response.headers.add('Access-Control-Allow-Methods', 'GET')
         return response
     except Exception as e:
         print(e)
@@ -107,7 +105,6 @@ def getJobOpeningList(event, context):
 @app.route('/post-job', methods=['POST'])
 def postJob(event, context):
     try:
-        print(event)
         logging.info("Received Lambda event: %s", json.dumps(event))
         event_body = json.loads(event['body'])
         data = event_body
@@ -161,9 +158,6 @@ def getAppliedJobs(event, context):
             'statusCode': 201,
             'body': json.dumps(job_list)
         }
-        response.headers.add('Access-Control-Allow-Origin', '*')  # Replace with your frontend domain or '*' for any domain
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-        response.headers.add('Access-Control-Allow-Methods', 'GET')
         return response
     except Exception as e:
         print(e)
@@ -252,7 +246,6 @@ def applyJob(event, context):
 
 @app.route('/application-no-relevancy', methods=['GET'])
 def getApplicationsWithNoRelevancy(event, context):
-    print(event)
     try:
         applications = Application.query.filter_by(relevancyScore=-1).all()
 
@@ -397,5 +390,34 @@ def getJobById(event, context):
             'statusCode': 500,
             'body': json.dumps({'error': str(e)})
         }
+    
+@app.route('/get-upload-resume-singed-url', methods=['GET'])
+def getUploadResumePresignedUrl(event, context):
+    s3 = boto3.client('s3')
+    try:
+        signedUrl = s3.generate_presigned_url(
+            'put_object',
+            Params={
+                'Bucket': 'resume-screener-resume-storage-dev',
+                'Key': 'upload/'
+            },
+            ExpiresIn=300
+        )
+        print(signedUrl)
+        response = {
+            'status': 200,
+            'response': {
+                'singedUrl': signedUrl,
+                'expiration': 300
+            }
+        }
+    except Exception as e:
+        response = {
+            'status': 500,
+            'error': "Unable to generate presigned url"
+        }
+    return response
+        
+        
 if __name__ == '__main__':
     app.run(debug=True)
