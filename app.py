@@ -126,7 +126,7 @@ def postJob(event, context):
             'body': json.dumps({'error': str(e)})
         }
 
-@app.route('/applied-jobs', methods=['GET'])
+@app.route('/applied-jobs', methods=['POST'])
 def getAppliedJobs(event, context):
     try:
         candidate_id = 0
@@ -166,7 +166,7 @@ def getAppliedJobs(event, context):
         }
 
 
-@app.route('/non-applied-jobs', methods=['GET'])
+@app.route('/non-applied-jobs', methods=['POST'])
 def getNonAppliedJobs(event, context):
     try:
         candidate_id = 0
@@ -310,13 +310,13 @@ def postAverageRelevancy(event, context):
         }
 
 
-@app.route('/get-job-id', methods=['GET'])
+@app.route('/get-job-id', methods=['POST'])
 def getJobById(event, context):
     try:
         print(event)
         # Retrieve the job by its ID
         job_id = 0
-        if event.get["jobid"]:
+        if event["jobid"]:
                 job_id = event['jobid']
         job = Job.query.get(job_id)
 
