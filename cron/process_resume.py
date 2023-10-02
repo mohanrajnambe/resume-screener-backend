@@ -1,8 +1,6 @@
-
 import utils.textract_utils as textUtils
 import utils.s3_utils as s3Utils
 import utils.dynamodb_utils as dynamoDbUtils
-import asyncio
 
 BUCKET_NAME = 'resume-screener-resume-storage-dev'
 BUCKET_RESUME_DIRECTORY = 'uploads/'

@@ -1,22 +1,54 @@
+# service: resume-processor
+ 
+# plugins:
+#   - serverless-python-requirements
+#   - serverless-wsgi
+#   - serverless-offline
+#   - serverless-dynamodb-local
+# custom:
+#   wsgi:
+#     app: app.app
+#     packRequirements: false
+#   pythonRequirements:
+#     dockerizePip: non-linux
+ 
+# provider:
+#   name: aws
+#   runtime: python3.9
+#   stage: dev
+#   region: us-east-1
+ 
+# functions:
+#   processResume:
+#     handler: app.processResume
+#     events:
+#       - http:
+#           path: /process-resume
+#           method: POST
+  
+#   processContext:
+#     handler: app.processContext
+#     events:
+#       - http:
+#           path: /process-context
+#           method: POST
+
 service: resume-processor
  
+provider:
+  name: aws
+  runtime: python3.10
+  region: us-east-1
+  stage: dev
+ 
 plugins:
-  - serverless-python-requirements
   - serverless-wsgi
-  - serverless-offline
-  - serverless-dynamodb-local
+  - serverless-python-requirements
+
 custom:
   wsgi:
     app: app.app
     packRequirements: false
-  pythonRequirements:
-    dockerizePip: non-linux
- 
-provider:
-  name: aws
-  runtime: python3.9
-  stage: dev
-  region: us-east-1
  
 functions:
   processResume:
