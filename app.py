@@ -355,8 +355,8 @@ def getJobById(event, context):
 
                     # Check if the item was found
                     print("Received Lambda event: %s", json.dumps(response))
-                    if 'Item' in response:
-                        item = response['Item']
+                    if 'Item' in json.dumps(response):
+                        item = json.dumps(response['Item'])
                         # application_dict['summary'] = json.loads(item['summary']['S'])
                         summary = json.loads(item['summary']['S'])
                         # print(f"summary retrieved: {json.loads(item['summary']['S']['JSON'])}")
