@@ -63,8 +63,9 @@ def getCandidateList(event, context):
         }
 
 @app.route('/job-opening-list')
-def getJobOpeningList():
+def getJobOpeningList(event, context):
     try:
+        print(f'event: {event}')
         applicationcount = 'false'
         # print("Received Lambda event: %s", json.dumps(event))
         applicationcount = request.args.get('applicationcount')
@@ -72,7 +73,7 @@ def getJobOpeningList():
         #     if event["queryStringParameters"].get("applicationcount"):
         #         applicationcount = event["queryStringParameters"]['applicationcount']
 
-        print(applicationcount)
+        print(f'args: {applicationcount}')
 
         applicationCount = applicationcount.lower() == 'true'
         job_list = []
@@ -314,6 +315,7 @@ def postAverageRelevancy(event, context):
 @app.route('/get-job-id', methods=['GET'])
 def getJobById(event, context):
     try:
+        print(event)
         # Retrieve the job by its ID
         job_id = 0
         if event.get("queryStringParameters") and event["queryStringParameters"].get("jobid"):
